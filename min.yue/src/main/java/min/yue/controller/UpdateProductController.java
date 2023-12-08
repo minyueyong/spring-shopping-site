@@ -82,7 +82,7 @@ public class UpdateProductController {
 		
 
         // Save the updated entity
-       productsRepo.update(editedProduct);
+   
 
 
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import min.yue.data.Product;
 import min.yue.service.ProductService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/product")
@@ -28,10 +29,12 @@ public class ProductsController {
 	}
 
 	@ModelAttribute
-	public void addProductToModel(Model model) {
+	public void addProductToModel(@RequestParam(defaultValue = "0") Integer pageNo,
+								  @RequestParam(defaultValue = "5") Integer pageSize,
+								  @RequestParam(defaultValue = "id") String sortBy,Model model) {
 
 		// retrieve all ingredients from DB
-		List<Product> products = productService.getProductList();
+		List<Product> products = productService.getProductList(pageNo, pageSize, sortBy);
 		System.out.println ("total product retrieved" + products.size());
 		model.addAttribute("products", products);
 

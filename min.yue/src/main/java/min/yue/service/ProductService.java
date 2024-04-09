@@ -1,15 +1,13 @@
 package min.yue.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +25,18 @@ public class ProductService  {
 		this.productRepository = productRepository;
 	}
 	
-	public List<Product> getProductList (){
-		
-	
-		return productRepository.findAll();
+	public List<Product> getProductList (Integer pageNo, Integer pageSize, String sortBy){
+
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+
+		Page<Product> pagedResult = productRepository.findAll(paging);
+
+		if(pagedResult.hasContent()) {
+			return pagedResult.getContent();
+		} else {
+			return new ArrayList<Product>();
+		}
 	}
 	
 	

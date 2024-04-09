@@ -1,5 +1,6 @@
 package min.yue.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import min.yue.data.Product;
 import min.yue.repository.ProductRepository;
 
 @Controller
+@Slf4j
 public class UpdateProductController {
 
 	private final ProductRepository productsRepo; // this is for us to retrieve Products from the DB
@@ -55,7 +58,7 @@ public class UpdateProductController {
 		
 		Product product = productsRepo.findById(itemId)
 				.orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + itemId));
-		
+
 		model.addAttribute("product", product);
 		
 		return "edit_product"; 
@@ -68,10 +71,10 @@ public class UpdateProductController {
 		if (errors.hasErrors()) {
 			return "edit_product";
 		}
-		
-		
-		Product editedProduct = productsRepo.findById(String.valueOf(product.getId()))
-				.orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + product.getId()));
+
+
+		Optional<Product> optionalProduct = productsRepo.findById(String.valueOf(product.getId()));
+		Product editedProduct = optionalProduct.orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + product.getId()));
 		
         // Update fields with the values from the updatedEntity
 		editedProduct.setName(product.getName());

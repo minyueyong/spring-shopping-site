@@ -5,40 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Table</title>
-  <style>
-    /* Add your CSS styles here */
-    body {
-      font-family: Arial, sans-serif;
-    }
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      z-index: 999;
-    }
-  </style>
 </head>
 <body>
 
@@ -80,7 +48,15 @@
   </tbody>
 </table>
 
+<!-- Pagination Controls -->
+<div class="pagination-container">
+  <ul class="pagination">
+    <!-- Pagination controls here -->
+  </ul>
+</div>
 
+<!-- Display Total Products -->
+<div class="total-products">Total: <span th:text="${products.size()}"></span></div>
 
 <script>
   function openPopup() {

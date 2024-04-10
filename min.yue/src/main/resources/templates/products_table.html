@@ -76,9 +76,9 @@
   </div>
 
   <!-- Display Total Products -->
-  <div class="total-products">Total: <span th:text="${products.getTotalElements()}"></span></div>
-  <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()}"></span></div>
-  <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div>
+  <div class="total-products">Total: <span th:text="${products.getTotalElements()}"></span></div><br/>
+  <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()+1}"></span></div> <br/>
+  <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div><br/>
 </div>
 
 

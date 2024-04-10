@@ -16,47 +16,73 @@
 	<button >Add New Product</button>
 </form>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Code</th>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Brand</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr th:each="product : ${products}">
-      <td th:text="${product.id}"></td>
-      <td th:text="${product.code}"></td>
-      <td th:text="${product.name}"></td>
-      <td th:text="${product.category}"></td>
-      <td th:text="${product.brand}"></td>
-      <td th:text="${product.type}"></td>
-      <td th:text="${product.description}"></td>
-      <td> 
-		  <form action="/edit_product_page" method="post">
-			 <input type="hidden" name="productId" th:value="${product.id}" />
-			<button >Edit</button>
-		</form>
-	 </td>
-    </tr>
-  </tbody>
-</table>
+<div id="productTableContainer" th:fragment="productTable">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Brand</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="product : ${products.getContent()}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.code}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.category}"></td>
+        <td th:text="${product.brand}"></td>
+        <td th:text="${product.type}"></td>
+        <td th:text="${product.description}"></td>
+        <td>
+            <form action="/edit_product_page" method="post">
+               <input type="hidden" name="productId" th:value="${product.id}" />
+              <button >Edit</button>
+          </form>
+       </td>
+      </tr>
+    </tbody>
+  </table>
 
-<!-- Pagination Controls -->
-<div class="pagination-container">
-  <ul class="pagination">
-    <!-- Pagination controls here -->
-  </ul>
+  <!-- Pagination Controls -->
+  <div class="pagination-container">
+    <ul class="pagination">
+      <!--<li class="page-item" th:classappend="${currentPage == 0} ? disabled">
+       <a class="page-link" th:href="@{/(page=0)}">First</a>
+     </li>
+    <li class="page-item" th:classappend="${currentPage == 0} ? disabled">
+       <a class="page-link" th:href="@{/(page=${currentPage - 1})}">Previous</a>
+     </li>
+     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? active">
+       <a class="page-link" th:href="@{/(page=${i})}" th:text="${i + 1}"></a>
+     </li>-->
+
+
+      <li class="page-item" th:if="${products.hasNext()}">
+        <button id="nextButton" th:onclick="getNextPage([[${products.nextPageable()?.getPageNumber()}]])">Next</button>
+      </li>
+
+
+
+      <!--<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? disabled">
+        <a class="page-link" th:href="@{/(page=${totalPages - 1})}">Last</a>
+      </li>-->
+    </ul>
+  </div>
+
+  <!-- Display Total Products -->
+  <div class="total-products">Total: <span th:text="${products.getTotalElements()}"></span></div>
+  <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()}"></span></div>
+  <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div>
 </div>
 
-<!-- Display Total Products -->
-<div class="total-products">Total: <span th:text="${products.size()}"></span></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
   function openPopup() {
@@ -72,6 +98,27 @@
     // For simplicity, let's just close the popup for now
     closePopup();
   }
+  </script>
+<script th:inline="javascript">
+  var getNextPage = function(pageNumber) {
+    console.log("Getting Next page: " + pageNumber);
+    $.ajax({
+      url: '/product', // The URL to which the request is sent
+      method: 'GET', // The HTTP method (GET in this case)
+      data: { pageNumber: pageNumber }, // Data to be sent with the request (next page number)
+      success: function(data) {
+        // Update the content of the page with the data received from the server
+
+        $('#productTableContainer').html($(data).filter('#productTableContainer').html());
+      },
+      error: function(xhr, status, error) {
+        // Callback function to handle errors
+        console.error('Error fetching next page:', error);
+      }
+    });
+  };
+
+
 </script>
 
 </body>

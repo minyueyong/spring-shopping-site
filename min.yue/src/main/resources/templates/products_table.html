@@ -63,8 +63,8 @@
      </li>-->
 
 
-      <li class="page-item" th:if="${products.hasNext()}">
-        <button id="nextButton" th:onclick="getNextPage([[${products.nextPageable()?.getPageNumber()}]])">Next</button>
+      <li class="page-item" >
+        <button id="nextButton" th:onclick="${products.hasNext()} ? 'getNextPage(' + ${products.nextPageable()?.getPageNumber()} + ')' : ''">Next</button>
       </li>
 
 

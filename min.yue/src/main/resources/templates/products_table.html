@@ -17,6 +17,14 @@
 </form>
 
 <div id="productTableContainer" th:fragment="productTable">
+
+  <label for="sortBy">SortBy:</label>
+  <select id="sortBy" onchange="changeSortBy(this)">
+    <option value="ID" th:selected="${products.getPageable().getPageSize() == 5}">ID</option>
+    <option value="Name" th:selected="${products.getPageable().getPageSize() == 10}">Name</option>
+    <option value="Code" th:selected="${products.getPageable().getPageSize() == 15}">Code</option>
+  </select>
+
   <table>
     <thead>
       <tr>

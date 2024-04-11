@@ -84,53 +84,55 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<script>
-  function openPopup() {
-    document.getElementById('productPopup').style.display = 'block';
-  }
+  <script>
+    function openPopup() {
+      document.getElementById('productPopup').style.display = 'block';
+    }
 
-  function closePopup() {
-    document.getElementById('productPopup').style.display = 'none';
-  }
+    function closePopup() {
+      document.getElementById('productPopup').style.display = 'none';
+    }
 
-  function addProduct() {
-    // Add your logic to handle the new product data and update the table
-    // For simplicity, let's just close the popup for now
-    closePopup();
-  }
+    function addProduct() {
+      // Add your logic to handle the new product data and update the table
+      // For simplicity, let's just close the popup for now
+      closePopup();
+    }
   </script>
-<script th:inline="javascript">
-  var getPage = function(pageNumber) {              //getting to first , next , prev, last page
-    console.log("Getting  page: " + pageNumber);
-    $.ajax({
-      url: '/product', // The URL to which the request is sent
-      method: 'GET', // The HTTP method (GET in this case)
-      data: { pageNumber: pageNumber }, // Data to be sent with the request (next page number)
-      success: function(data) {
-        // Update the content of the page with the data received from the server
 
-        $('#productTableContainer').html($(data).filter('#productTableContainer').html());
-      },
-      error: function(xhr, status, error) {
-        // Callback function to handle errors
-        console.error('Error fetching next page:', error);
-      }
-    });
-  };
+  <script th:inline="javascript">
 
-  function calculateLastPage(totalElements, pageSize) {
-    return Math.ceil(totalElements / pageSize);
-  }
+    var getPage = function(pageNumber) {              //getting to first , next , prev, last page
+      console.log("Getting  page: " + pageNumber);
+      $.ajax({
+        url: '/product', // The URL to which the request is sent
+        method: 'GET', // The HTTP method (GET in this case)
+        data: { pageNumber: pageNumber }, // Data to be sent with the request (next page number)
+        success: function(data) {
+          // Update the content of the page with the data received from the server
 
-  // Click event handler for the "Last" button
-  var getLastPage = function(totalElements, pageSize) {
+          $('#productTableContainer').html($(data).filter('#productTableContainer').html());
+        },
+        error: function(xhr, status, error) {
+          // Callback function to handle errors
+          console.error('Error fetching next page:', error);
+        }
+      });
+    };
 
-    var lastPage = calculateLastPage(totalElements, pageSize);
-    getPage(lastPage -1); // Fetch the last page
-  };
+    function calculateLastPage(totalElements, pageSize) {
+      return Math.ceil(totalElements / pageSize);
+    }
+
+    // Click event handler for the "Last" button
+    var getLastPage = function(totalElements, pageSize) {
+
+      var lastPage = calculateLastPage(totalElements, pageSize);
+      getPage(lastPage -1); // Fetch the last page
+    };
 
 
-</script>
+  </script>
 
 </body>
 </html>

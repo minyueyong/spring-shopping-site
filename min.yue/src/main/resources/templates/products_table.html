@@ -77,15 +77,15 @@
   <div class="total-products">Total: <span th:text="${products.getTotalElements()}"></span></div><br/>
   <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()+1}"></span></div> <br/>
   <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div><br/>
-  <div class="total-products">Page Size: <span th:text="${products.getPageable().getPageSize()}"></span></div><br/>
+  <div class="total-products">
   <label for="pageSize">Page Size:</label>
-  <select id="pageSize" onchange="changePageSize(this)">
-    <option value="5" th:selected="${products.getPageable().getPageSize() == 5}">5</option>
-    <option value="10" th:selected="${products.getPageable().getPageSize() == 10}">10</option>
-    <option value="15" th:selected="${products.getPageable().getPageSize() == 15}">15</option>
-    <option value="20" th:selected="${products.getPageable().getPageSize() == 20}">20</option>
-  </select>
-
+    <select id="pageSize" onchange="changePageSize(this)">
+      <option value="5" th:selected="${products.getPageable().getPageSize() == 5}">5</option>
+      <option value="10" th:selected="${products.getPageable().getPageSize() == 10}">10</option>
+      <option value="15" th:selected="${products.getPageable().getPageSize() == 15}">15</option>
+      <option value="20" th:selected="${products.getPageable().getPageSize() == 20}">20</option>
+    </select>
+  </div><br/>
 
 </div>
 

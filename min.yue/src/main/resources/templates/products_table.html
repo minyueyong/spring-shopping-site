@@ -54,15 +54,15 @@
     <ul class="pagination">
 
       <li class="page-item" >
-        <button id="firstButton" th:onclick=" getPage(0)">First</button>
+        <button id="firstButton" th:onclick="'getPage(0,' + ${products.getPageable().getPageSize()} + ')'" >First</button>
       </li>
 
       <li class="page-item" >
-        <button id="prevButton" th:onclick="${products.hasPrevious()} ? 'getPage(' + ${products.previousPageable()?.getPageNumber()} + ')' : ''">Previous</button>
+        <button id="prevButton" th:onclick="${products.hasPrevious()} ? 'getPage(' + ${products.previousPageable()?.getPageNumber()} + ',' + ${products.getPageable().getPageSize()}+ ')' : ''">Previous</button>
       </li>
 
       <li class="page-item" >
-        <button id="nextButton" th:onclick="${products.hasNext()} ? 'getPage(' + ${products.nextPageable()?.getPageNumber()} + ')' : ''">Next</button>
+        <button id="nextButton" th:onclick="${products.hasNext()} ? 'getPage(' + ${products.nextPageable()?.getPageNumber()} + ',' + ${products.getPageable().getPageSize()}+ ')' : ''">Next</button>
       </li>
 
 
@@ -78,13 +78,22 @@
   <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()+1}"></span></div> <br/>
   <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div><br/>
   <div class="total-products">Page Size: <span th:text="${products.getPageable().getPageSize()}"></span></div><br/>
+  <label for="pageSize">Page Size:</label>
+  <select id="pageSize" onchange="changePageSize(this)">
+    <option value="5" th:selected="${products.getPageable().getPageSize() == 5}">5</option>
+    <option value="10" th:selected="${products.getPageable().getPageSize() == 10}">10</option>
+    <option value="15" th:selected="${products.getPageable().getPageSize() == 15}">15</option>
+    <option value="20" th:selected="${products.getPageable().getPageSize() == 20}">20</option>
+  </select>
+
 
 </div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-  <script>
+<!-- Add and edit popup-->
+<script>
     function openPopup() {
       document.getElementById('productPopup').style.display = 'block';
     }
@@ -100,14 +109,15 @@
     }
   </script>
 
-  <script th:inline="javascript">
 
-    var getPage = function(pageNumber) {              //getting to first , next , prev, last page
+<script th:inline="javascript">
+
+    var getPage = function(pageNumber, pageSize) {              //getting to first , next , prev, last page
       console.log("Getting  page: " + pageNumber);
       $.ajax({
         url: '/product', // The URL to which the request is sent
         method: 'GET', // The HTTP method (GET in this case)
-        data: { pageNumber: pageNumber }, // Data to be sent with the request (next page number)
+        data: { pageNumber: pageNumber, pageSize:pageSize }, // Data to be sent with the request (next page number)
         success: function(data) {
           // Update the content of the page with the data received from the server
 
@@ -128,8 +138,30 @@
     var getLastPage = function(totalElements, pageSize) {
 
       var lastPage = calculateLastPage(totalElements, pageSize);
-      getPage(lastPage -1); // Fetch the last page
+      getPage(lastPage -1, pageSize); // Fetch the last page
     };
+
+
+    function changePageSize(selectElement) {
+      var selectedPageSize = selectElement.value;
+    //if page size is change, page number will change to default value
+      console.log("Selected Page Size: " + selectedPageSize);
+
+      $.ajax({
+        url: '/product', // The URL to which the request is sent
+        method: 'GET', // The HTTP method (GET in this case)
+        data: { pageSize: selectedPageSize}, // Data to be sent with the request (next page number)
+        success: function(data) {
+          // Update the content of the page with the data received from the server
+
+          $('#productTableContainer').html($(data).filter('#productTableContainer').html());
+        },
+        error: function(xhr, status, error) {
+          // Callback function to handle errors
+          console.error('Error fetching next page:', error);
+        }
+      });
+    }
 
 
   </script>

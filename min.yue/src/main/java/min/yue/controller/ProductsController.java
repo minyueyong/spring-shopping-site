@@ -36,8 +36,6 @@ public class ProductsController {
 		System.out.println("Total products retrieved: " + products.getTotalElements());
 		model.addAttribute("products", products);
 
-//log.info("is there value later" + products.hasNext());
-
 
 
 

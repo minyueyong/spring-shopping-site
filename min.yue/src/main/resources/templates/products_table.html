@@ -52,33 +52,33 @@
   <!-- Pagination Controls -->
   <div class="pagination-container">
     <ul class="pagination">
-      <!--<li class="page-item" th:classappend="${currentPage == 0} ? disabled">
-       <a class="page-link" th:href="@{/(page=0)}">First</a>
-     </li>
-    <li class="page-item" th:classappend="${currentPage == 0} ? disabled">
-       <a class="page-link" th:href="@{/(page=${currentPage - 1})}">Previous</a>
-     </li>
-     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? active">
-       <a class="page-link" th:href="@{/(page=${i})}" th:text="${i + 1}"></a>
-     </li>-->
-
 
       <li class="page-item" >
-        <button id="nextButton" th:onclick="${products.hasNext()} ? 'getNextPage(' + ${products.nextPageable()?.getPageNumber()} + ')' : ''">Next</button>
+        <button id="firstButton" th:onclick=" getPage(0)">First</button>
+      </li>
+
+      <li class="page-item" >
+        <button id="prevButton" th:onclick="${products.hasPrevious()} ? 'getPage(' + ${products.previousPageable()?.getPageNumber()} + ')' : ''">Previous</button>
+      </li>
+
+      <li class="page-item" >
+        <button id="nextButton" th:onclick="${products.hasNext()} ? 'getPage(' + ${products.nextPageable()?.getPageNumber()} + ')' : ''">Next</button>
       </li>
 
 
+      <li class="page-item" >
+        <button id="lastButton" th:onclick="'getLastPage(' + ${products.getTotalElements()} + ',' + ${products.getPageable().getPageSize()} + ')'">Last</button>
+      </li>
 
-      <!--<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? disabled">
-        <a class="page-link" th:href="@{/(page=${totalPages - 1})}">Last</a>
-      </li>-->
     </ul>
   </div>
 
-  <!-- Display Total Products -->
+  <!-- Display Statistics -->
   <div class="total-products">Total: <span th:text="${products.getTotalElements()}"></span></div><br/>
   <div class="total-products">Page: <span th:text="${products.getPageable().getPageNumber()+1}"></span></div> <br/>
   <div class="total-products">Total Page: <span th:text="${products.getTotalPages()}"></span></div><br/>
+  <div class="total-products">Page Size: <span th:text="${products.getPageable().getPageSize()}"></span></div><br/>
+
 </div>
 
 
@@ -100,8 +100,8 @@
   }
   </script>
 <script th:inline="javascript">
-  var getNextPage = function(pageNumber) {
-    console.log("Getting Next page: " + pageNumber);
+  var getPage = function(pageNumber) {              //getting to first , next , prev, last page
+    console.log("Getting  page: " + pageNumber);
     $.ajax({
       url: '/product', // The URL to which the request is sent
       method: 'GET', // The HTTP method (GET in this case)
@@ -116,6 +116,17 @@
         console.error('Error fetching next page:', error);
       }
     });
+  };
+
+  function calculateLastPage(totalElements, pageSize) {
+    return Math.ceil(totalElements / pageSize);
+  }
+
+  // Click event handler for the "Last" button
+  var getLastPage = function(totalElements, pageSize) {
+
+    var lastPage = calculateLastPage(totalElements, pageSize);
+    getPage(lastPage -1); // Fetch the last page
   };
 
 

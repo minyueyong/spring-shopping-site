@@ -29,13 +29,30 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       z-index: 999;
     }
+  .pagination-container {
+      text-align: center;
+      margin-top: 20px;
+  }
 
-    .total-products {
-  float: right;
-  margin-top: 10px; /* Adjust as needed */
-}
+  .pagination {
+      display: inline-block;
+      padding-left: 0;
+      margin: 0;
+  }
 
-    .pagination-container {
-  float: left;
-  margin-top: 10px; /* Adjust as needed */
-}
+  .pagination li {
+      display: inline;
+  }
+
+  .pagination li button {
+      display: inline-block;
+  }
+
+  .total-products {
+      text-align: right;
+      margin-top: 10px;
+  }
+
+  .total-products span {
+      margin-left: 10px;
+  }

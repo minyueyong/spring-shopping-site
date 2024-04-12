@@ -44,6 +44,11 @@ public class ProductsController {
 	}
 
 
+	// Method to populate the category dropdown
+	@ModelAttribute("categories")         //@Model Attribute shared across multiple handler method within the controller
+	public List<String> populateCategories() {
+		return productService.getCategoryDropdown(); // Replace this with the appropriate method in your ProductService
+	}
 
 
 }

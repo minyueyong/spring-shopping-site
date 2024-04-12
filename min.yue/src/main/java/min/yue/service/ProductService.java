@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service // discover by spring component scanning and instantiated as a bean
 @Slf4j
@@ -21,7 +23,11 @@ public class ProductService  {
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
-	
+
+	public List<String> getCategoryDropdown() {
+		return productRepository.findDistinctCategory();
+	}
+
 	public Page<Product> getProductList (Integer pageNo, Integer pageSize, String sortBy){
 		log.info("getProductList ->" + " pageNo : " + pageNo +" pageSize : " + pageSize + " sortBy: " + sortBy);
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));

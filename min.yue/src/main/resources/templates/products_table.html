@@ -18,12 +18,12 @@
 
 <div id="productTableContainer" th:fragment="productTable">
 
-  <label for="sortBy">SortBy:</label>
+<!--  <label for="sortBy">Category:</label>
   <select id="sortBy" onchange="changeSortBy(this)">
     <option value="ID" th:selected="${products.getPageable().getPageSize() == 5}">ID</option>
     <option value="Name" th:selected="${products.getPageable().getPageSize() == 10}">Name</option>
     <option value="Code" th:selected="${products.getPageable().getPageSize() == 15}">Code</option>
-  </select>
+  </select> -->
 
   <table>
     <thead>
@@ -31,7 +31,12 @@
         <th>ID</th>
         <th>Code</th>
         <th>Name</th>
-        <th>Category</th>
+        <th>Category:
+          <select>
+            <option th:each="value : ${categories}" th:value="${value}" th:text="${value}"></option>
+          </select>
+
+        </th>
         <th>Brand</th>
         <th>Type</th>
         <th>Description</th>

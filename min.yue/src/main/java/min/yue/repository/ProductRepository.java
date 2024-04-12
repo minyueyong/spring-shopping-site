@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,9 @@ public interface ProductRepository  extends PagingAndSortingRepository<Product, 
 	Optional<Product> findById(String id);
 
 	void save ( Product product);
+
+	@Query("SELECT DISTINCT a.category FROM Product a")
+	List<String> findDistinctCategory();
 	
 
 }

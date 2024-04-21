@@ -1,7 +1,4 @@
 # spring-shopping-site  ( WIP )
 
-- Currently only doing CRUD on a product table
-
-To do:
-
-1) Add a pagination to the product table
+- Doing CRUD on a product table
+- Successfully created pagination buttons using Spring Pagination and Sorting Repository 
